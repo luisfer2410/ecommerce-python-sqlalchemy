@@ -1,0 +1,377 @@
+/* ===== GENERAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #141E30, #243B55);
+  color: #f2f2f2;
+}
+
+/* ===== ENCABEZADO ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(20, 30, 48, 0.95);
+  padding: 15px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #00bcd4;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.menu a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #f2f2f2;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #00bcd4;
+}
+
+.search-container input {
+  padding: 6px 10px;
+  border: 1px solid #555;
+  border-radius: 20px;
+  width: 160px;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.search-container input::placeholder {
+  color: #aaa;
+}
+
+.user-actions a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.user-actions a:hover {
+  color: #00bcd4;
+}
+
+.cart {
+  font-weight: 600;
+}
+
+/* ===== SECCIÓN DE PRODUCTOS (página principal) ===== */
+.productos {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.productos h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #00bcd4;
+}
+
+.productos h2 a {
+  text-decoration: none;
+  color: #00bcd4;
+  font-weight: 400;
+}
+
+.productos-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.productos-slider {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.productos-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== TARJETAS (estilo general, para slider) ===== */
+.producto {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  flex: 0 0 250px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  backdrop-filter: blur(4px);
+  overflow: hidden; /* aseguramos recorte si hay imágenes absolutas */
+}
+
+.producto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* imágenes (slider) */
+.producto img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+/* nombre */
+.producto h3 {
+  font-size: 15px;
+  margin: 10px;
+  height: 40px;
+  color: #fff;
+}
+
+/* precios */
+.precio {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.tachado {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 5px;
+}
+
+/* etiqueta de oferta (general) */
+.oferta {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4081;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+/* ===== CATÁLOGO (reglas específicas que se integran al mismo tema de colores) ===== */
+.catalogo {
+  padding: 60px 40px;
+  /* opción: fondo sutil transparente que mantiene el degradado global visible */
+  background: linear-gradient(180deg, rgba(243,248,255,0.02), rgba(233,240,255,0.01));
+  text-align: center;
+  min-height: 100vh;
+}
+
+.catalogo h2 {
+  font-size: 1.8em;
+  margin-bottom: 40px;
+  color: #00bcd4;
+  letter-spacing: 1px;
+}
+
+/* GRID DE PRODUCTOS */
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 35px;
+  justify-items: center;
+}
+
+/* TARJETAS DEL CATÁLOGO: tamaño uniforme y overrides del .producto */
+.catalogo .producto {
+  position: relative;
+  background: rgba(255, 255, 255, 0.05); /* mismo color translúcido */
+  padding: 15px;
+  border-radius: 12px;
+  width: 280px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  border: none;
+  backdrop-filter: blur(4px);
+}
+
+/* efecto hover igual que en pantalla principal */
+.catalogo .producto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* IMAGENES: contenedor con dos imágenes (front/back) */
+.img-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+/* imagen trasera oculta por defecto */
+.img-container .img-back {
+  opacity: 0;
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+/* al pasar el mouse, intercambia opacidades */
+.catalogo .producto:hover .img-container .img-back {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.catalogo .producto:hover .img-container .img-front {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* asegurar que la etiqueta de oferta quede por encima de las imágenes */
+.catalogo .oferta {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background-color: #ff4081; /* mantengo tu color de oferta */
+  color: white;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  z-index: 3; /* importante: siempre por encima */
+}
+
+/* INFORMACIÓN DEL PRODUCTO (catalogo) */
+.catalogo .producto h3 {
+  margin-top: 10px;
+  font-size: 1em;
+  color: #fff;
+  text-align: center;
+}
+
+.catalogo .precio {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #ddd;
+  font-size: 1.05em;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 40px;
+  backdrop-filter: blur(6px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 992px) {
+  .catalogo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu {
+    margin-top: 10px;
+  }
+
+  .search-container input {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .user-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .producto {
+    flex: 0 0 200px;
+  }
+
+  .producto img {
+    height: 220px;
+  }
+}
+
+@media (max-width: 600px) {
+  .catalogo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalogo .producto {
+    width: 90%;
+    height: 380px;
+  }
+
+  .catalogo .producto img,
+  .img-container img {
+    height: 220px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* en móviles ocultamos el hover swap por no ser intuitivo (las imágenes se mostrarán front por defecto) */
+  .catalogo .producto:hover .img-container .img-back {
+    opacity: 0 !important;
+  }
+
+  footer {
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding: 15px 0;
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 40px;
+  backdrop-filter: blur(6px);
+}
+
+}

@@ -1,0 +1,315 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ===== ALTURA COMPLETA Y ESTRUCTURA ===== */
+html, body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(135deg, #141E30, #243B55);
+  color: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== ENCABEZADO ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(20, 30, 48, 0.95);
+  padding: 15px 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  color: #00bcd4;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.menu a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #f2f2f2;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: #00bcd4;
+}
+
+.search-container input {
+  padding: 6px 10px;
+  border: 1px solid #555;
+  border-radius: 20px;
+  width: 160px;
+  background-color: #1a1a1a;
+  color: #fff;
+}
+
+.search-container input::placeholder {
+  color: #aaa;
+}
+
+.user-actions a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.user-actions a:hover {
+  color: #00bcd4;
+}
+
+.cart {
+  font-weight: 600;
+}
+
+/* ===== SECCIÓN DE PRODUCTOS ===== */
+main {
+  flex: 1; /* hace que el main empuje el footer hacia abajo */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.productos {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.productos h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #00bcd4;
+}
+
+.productos h2 a {
+  text-decoration: none;
+  color: #00bcd4;
+  font-weight: 400;
+}
+
+.productos-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.productos-slider {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.productos-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== TARJETAS ===== */
+.producto {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  flex: 0 0 250px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  backdrop-filter: blur(4px);
+}
+
+.producto:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+}
+
+/* imágenes */
+.producto img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+/* nombre */
+.producto h3 {
+  font-size: 15px;
+  margin: 10px;
+  height: 40px;
+  color: #fff;
+}
+
+/* precios */
+.precio {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+.tachado {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 5px;
+}
+
+/* etiqueta de oferta */
+.oferta {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4081;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.img-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+/* imagen trasera oculta por defecto */
+.img-container .img-back {
+  opacity: 0;
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+/* al pasar el mouse, intercambia opacidades */
+.catalogo .producto:hover .img-container .img-back {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.catalogo .producto:hover .img-container .img-front {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* ===== EFECTO DE CAMBIO DE IMAGEN EN LA PANTALLA PRINCIPAL ===== */
+.producto {
+  position: relative;
+  overflow: hidden;
+}
+
+/* contenedor para las 2 imágenes */
+.producto .img-container {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+}
+
+/* ambas imágenes ocupan el mismo espacio */
+.producto .img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* la segunda (trasera) comienza oculta */
+.producto .img-container .img-back {
+  opacity: 0;
+  transform: scale(1.03);
+}
+
+/* al pasar el mouse, se intercambian */
+.producto:hover .img-container .img-front {
+  opacity: 0;
+  transform: scale(0.97);
+}
+
+.producto:hover .img-container .img-back {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* asegurar que la etiqueta de oferta siga visible */
+.producto .oferta {
+  z-index: 3;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  color: #ccc;
+  backdrop-filter: blur(6px);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menu {
+    margin-top: 10px;
+  }
+
+  .search-container input {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .user-actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .producto {
+    flex: 0 0 200px;
+  }
+
+  .producto img {
+    height: 220px;
+  }
+}

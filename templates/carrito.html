@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - Rain🌧️</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Proyecto.css') }}">
+
+    <style>
+        body {
+            background: #0d1117;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+        }
+
+        .cart-container {
+            min-height: 80vh;
+        }
+
+        .cart-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(5px);
+        }
+
+        .product-img {
+            width: 75px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .item-row {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            transition: 0.3s;
+        }
+
+        .btn-checkout {
+            background-color: #d00000;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-weight: 700;
+            width: 100%;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: #a00000;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .remove-link {
+            color: #ff4d4d;
+            font-size: 0.75rem;
+            text-decoration: none;
+            opacity: 0.7;
+        }
+
+        .remove-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .shipping-notice {
+            background: rgba(0, 188, 212, 0.1);
+            border-left: 4px solid #00bcd4;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        /* Estilo para los mensajes de error de stock */
+        .alert-stock {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            font-size: 0.85rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar p-3 border-bottom border-secondary">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-lg-5">
+        <div class="logo">
+            <a href="/" style="text-decoration:none; color:inherit; font-weight: 800; font-size: 1.6rem;">RAIN🌧️</a>
+        </div>
+        <div>
+            <a href="/" class="text-white text-decoration-none small">← Volver a la tienda</a>
+        </div>
+    </div>
+</header>
+
+<main class="container my-5 cart-container">
+    <div class="row g-5">
+        
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold mb-0">Tu Carrito</h2>
+                {% if items %}
+                    <a href="{{ url_for('empty_cart') }}" class="btn btn-outline-danger btn-sm" style="font-size: 0.7rem;">Vaciar Carrito</a>
+                {% endif %}
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-stock mb-4 animate__animated animate__fadeIn">
+                    ⚠️ {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <div class="shipping-notice mb-4">
+                {% if total < 40 %}
+                    <p class="mb-0 small">Faltan <strong>REF {{ "{:.2f}".format(40 - total) }}</strong> para envío GRATIS en Barquisimeto.</p>
+                {% else %}
+                    <p class="mb-0 small text-info fw-bold">¡Tu pedido califica para ENVÍO GRATIS! 🌧️🔥</p>
+                {% endif %}
+            </div>
+
+            <div class="cart-items">
+                {% if items %}
+                    {% for item in items %}
+                    <div class="item-row d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ item.imagen if 'http' in item.imagen else url_for('static', filename='img/' + item.imagen) }}" 
+                                 alt="{{ item.nombre }}" class="product-img">
+                            
+                            <div class="ms-3">
+                                <h6 class="mb-1 fw-bold">{{ item.nombre }}</h6>
+                                <div class="d-flex align-items-center mt-2">
+                                    <a href="{{ url_for('update_cart', id=item.id, action='decrement') }}" class="btn btn-sm btn-outline-secondary py-0 text-white" style="width: 25px;">-</a>
+                                    <span class="mx-3 small fw-bold">{{ item.cantidad }}</span>
+                                    <a href="{{ url_for('update_cart', id=item.id, action='increment') }}" class="btn btn-sm btn-outline-secondary py-0 text-white" style="width: 25px;">+</a>
+                                </div>
+                                <a href="{{ url_for('remove_from_cart', id=item.id) }}" class="remove-link d-inline-block mt-2">Eliminar</a>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <p class="fw-bold mb-0">REF {{ "{:.2f}".format(item.precio * item.cantidad) }}</p>
+                            <small class="text-muted" style="font-size: 0.7rem;">c/u REF {{ "{:.2f}".format(item.precio) }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <h5 class="text-muted">No has añadido nada todavía.</h5>
+                        <a href="/" class="btn btn-outline-info mt-3">Ver catálogo</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="cart-card sticky-top" style="top: 20px;">
+                <h4 class="fw-bold mb-4">Resumen</h4>
+                
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Subtotal</span>
+                    <span>REF {{ "{:.2f}".format(total) }}</span>
+                </div>
+
+                <div class="mb-4">
+                    <p class="text-muted mb-2 small">Envío</p>
+                    <div class="form-check small">
+                        <input class="form-check-input" type="radio" checked disabled>
+                        <label class="form-check-label">
+                            {{ "Gratis (Barquisimeto)" if total >= 40 else "Por calcular en el pago" }}
+                        </label>
+                    </div>
+                </div>
+
+                <hr style="border-color: rgba(255,255,255,0.1);">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="fs-5">Total</span>
+                    <span class="fs-3 fw-bold text-info">REF {{ "{:.2f}".format(total) }}</span>
+                </div>
+
+                {% if items %}
+                    <a href="{{ url_for('checkout') }}" class="btn-checkout">Pagar Pedido</a>
+                {% else %}
+                    <button class="btn btn-secondary w-100 py-3 fw-bold" disabled>CARRITO VACÍO</button>
+                {% endif %}
+                
+                <p class="text-center text-muted mt-3" style="font-size: 0.7rem;">
+                    Aceptamos Pago Móvil, Zelle y Efectivo.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer class="text-center py-4 text-muted border-top border-secondary mt-5">
+    <p class="small">© 2026 Rain Clothes. Hecho en Barquisimeto.</p>
+</footer>
+
+</body>
+</html>

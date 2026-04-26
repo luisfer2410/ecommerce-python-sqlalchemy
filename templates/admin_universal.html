@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo | Rain</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='catalogo.css') }}">
+    <style>
+        body { background-color: #0b0e14; color: white; }
+        .table-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 188, 212, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .table thead th {
+            color: #00bcd4;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #00bcd4;
+        }
+        .badge-rain { background-color: #00bcd4; color: #10141d; font-weight: bold; }
+        .btn-action { transition: 0.3s; text-decoration: none; }
+        .btn-action:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-info alert-dismissible fade show bg-dark text-info border-info" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="fw-bold mb-0">SISTEMA DE GESTIÓN <span style="color: #00bcd4;">RAIN</span></h1>
+                <p class="text-white-50">Explorando tabla: <span class="text-info">{{ tabla_nombre.upper() }}</span></p>
+            </div>
+            {% if tabla_nombre == 'products' %}
+                <a href="{{ url_for('crear_producto') }}" class="btn btn-info fw-bold btn-action">+ NUEVO PRODUCTO</a>
+            {% endif %}
+        </div>
+
+        <div class="table-container p-4 shadow-lg">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle">
+                    <thead>
+                        <tr>
+                            {% for col in columnas %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                            <th class="text-center">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if tabla_nombre == 'products' %}
+                            {% for p in datos %}
+                            <tr>
+                                <td><strong>#{{ p.id }}</strong></td>
+                                <td>{{ p.name }}</td>
+                                <td class="text-info">REF {{ p.price }}</td>
+                                <td>{{ p.stock_quantity }}</td>
+                                <td><span class="badge border text-uppercase">{{ p.size }}</span></td>
+                                <td>{{ p.category }}</td>
+                                <td><span class="badge badge-rain">{{ p.status }}</span></td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('editar_producto', id=p.id) }}" class="btn btn-sm btn-outline-light me-1 btn-action">✏️</a>
+                                    <a href="{{ url_for('eliminar_registro', tabla='products', id=p.id) }}" 
+                                       class="btn btn-sm btn-outline-danger btn-action"
+                                       onclick="return confirm('¿Seguro que quieres borrar este producto?')">🗑️</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        {% elif tabla_nombre == 'users' %}
+                            {% for u in datos %}
+                            <tr>
+                                <td>{{ u.id }}</td>
+                                <td>{{ u.full_name }}</td>
+                                <td>{{ u.email }}</td>
+                                <td><span class="badge bg-dark border border-info">{{ u.role_id }}</span></td>
+                                <td><span class="badge {% if u.status == 'Active' %}bg-success{% else %}bg-danger{% endif %}">{{ u.status }}</span></td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('eliminar_registro', tabla='users', id=u.id) }}" 
+                                       class="btn btn-sm btn-outline-danger btn-action"
+                                       onclick="return confirm('¿Borrar este usuario?')">🗑️</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        {% elif tabla_nombre == 'orders' %}
+                            {% for o in datos %}
+                            <tr>
+                                <td>{{ o.id }}</td>
+                                <td>User: {{ o.user_id }}</td>
+                                <td>{{ o.order_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td class="fw-bold text-info">REF {{ o.total_price }}</td>
+                                <td><span class="badge {% if o.status == 'Paid' %}bg-success{% else %}bg-warning text-dark{% endif %}">{{ o.status }}</span></td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('ver_detalle_admin', tabla='orders', id=o.id) }}" class="btn btn-sm btn-info btn-action">Detalles</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        
+                        {% elif tabla_nombre == 'invoice_items' %}
+                            {% for ii in datos %}
+                            <tr>
+                                <td><strong>#{{ ii.id }}</strong></td>
+                                <td>Factura #{{ ii.invoice_id }}</td>
+                                <td>Producto #{{ ii.product_id }}</td>
+                                <td>{{ ii.quantity }}</td>
+                                <td class="text-info">REF {{ ii.unit_price_at_sale }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('eliminar_registro', tabla='invoice_items', id=ii.id) }}" 
+                                       class="btn btn-sm btn-outline-danger btn-action"
+                                       onclick="return confirm('¿Borrar este ítem?')">🗑️</a>
+                                </td>
+                            </tr>
+                            {% endfor %}    
+
+                        {% elif tabla_nombre == 'invoices' %}
+                            {% for i in datos %}
+                            <tr>
+                                <td>{{ i.id }}</td>
+                                <td class="fw-bold">{{ i.invoice_number }}</td>
+                                <td>Ord: {{ i.order_id }}</td>
+                                <td>{{ i.issue_date.strftime('%d/%m/%Y') }}</td>
+                                <td>REF {{ i.total_net }}</td>
+                                <td><span class="badge bg-secondary">{{ i.status }}</span></td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-light btn-action">PDF</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                        {% elif tabla_nombre == 'roles' %}
+                            {% for r in datos %}
+                            <tr>
+                                <td>{{ r.id }}</td>
+                                <td class="fw-bold text-info text-uppercase">{{ r.name }}</td>
+                                <td>{{ r.status }}</td>
+                                <td class="text-center">
+                                    <a href="{{ url_for('eliminar_registro', tabla='roles', id=r.id) }}" class="btn btn-sm btn-outline-danger btn-action">🗑️</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{{ url_for('catalogo') }}" class="btn btn-link text-white-50 text-decoration-none small">← Volver al Catálogo Público</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

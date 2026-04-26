@@ -1,0 +1,173 @@
+body, main {
+  display: block !important;
+  background: linear-gradient(135deg, #141E30, #243B55);
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Contenedor principal */
+.detalle-container {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+/* Caja del producto */
+.producto-detalle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+  padding: 20px;
+}
+
+/* Imagen del producto */
+.imagen-container img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Información del producto */
+.producto-info {
+  flex: 1;
+  color: #f2f2f2;
+  min-width: 300px;
+}
+
+.producto-info h1 {
+  color: #00bcd4;
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.precio-detalle {
+  font-size: 20px;
+  margin: 10px 0;
+  color: #fff;
+}
+
+.precio-detalle .tachado {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 8px;
+}
+
+.descripcion {
+  margin: 20px 0;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+/* Tallas y colores */
+.tallas, .colores {
+  margin: 20px 0;
+}
+
+.tallas span, .colores span {
+  display: inline-block;
+  padding: 8px 14px;
+  margin: 5px;
+  border-radius: 8px;
+  border: 1px solid #00bcd4;
+  color: #00bcd4;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.tallas span:hover, .colores span:hover {
+  background: #00bcd4;
+  color: #141E30;
+}
+
+/* Botón */
+.boton-agregar {
+  background-color: #00bcd4;
+  color: #141E30;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.boton-agregar:hover {
+  background-color: #0097a7;
+  transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #ccc;
+}
+
+/* ===== RESPONSIVIDAD ===== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .producto-detalle {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .producto-info {
+    width: 100%;
+  }
+
+  .producto-info h1 {
+    font-size: 24px;
+  }
+
+  .descripcion {
+    font-size: 15px;
+    padding: 0 10px;
+  }
+
+  .imagen-container img {
+    max-width: 400px;
+  }
+}
+
+/* Móviles */
+@media (max-width: 576px) {
+  .detalle-container {
+    margin: 30px 10px;
+    padding: 10px;
+  }
+
+  .producto-info h1 {
+    font-size: 20px;
+  }
+
+  .descripcion {
+    font-size: 14px;
+  }
+
+  .imagen-container img {
+    max-width: 100%;
+  }
+
+  .tallas span, .colores span {
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+
+  .boton-agregar {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+}
